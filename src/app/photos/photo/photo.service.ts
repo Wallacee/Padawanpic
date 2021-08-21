@@ -19,8 +19,12 @@ export class PhotoService {
     const params = new HttpParams()
       .append('page', page.toString());
 
-    console.log(API + '/' + userName + '?_page=' + page + '&_limit=3')
     return this.http
       .get<Photo[]>(API + '/' + userName + '?_page=' + page + '&_limit=3');
+  }
+
+  getById(userName: string, id: number) {
+
+    return this.http.get<Photo>(API + '/' + userName + '/' + id)
   }
 }
