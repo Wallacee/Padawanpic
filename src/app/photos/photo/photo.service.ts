@@ -1,30 +1,38 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Photo } from "./photo";
+import { Photo } from './photo';
 
-const API = 'http://localhost:3000';
+const API = 'https://localhost:44317';
+let headers = new HttpHeaders().append('Content-Type', 'application/json');
+
+let options = { headers };
 
 @Injectable({ providedIn: 'root' })
 export class PhotoService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+  listFromUser(userId: string) {
+    const params = new HttpParams().append('userId', userId);
 
-  listFromUser(userName: string) {
-    return this.http
-      .get<Photo[]>(API + '/' + userName);
+    return this.http.get<Photo[]>(API + '/Photo/FindAllByUser', { params });
   }
 
-  listFromUserPaginated(userName: string, page: number) {
-    const params = new HttpParams()
-      .append('page', page.toString());
+  listFromUserPaginated(userId: string, pageNumber: number) {
+    const params = new HttpParams().append('userId', userId);
+    const pagingParameters = JSON.stringify({ pageNumber, pageSize: 3 });
 
-    return this.http
-      .get<Photo[]>(API + '/' + userName + '?_page=' + page + '&_limit=3');
+    return this.http.post<Photo[]>(
+      API + '/Photo/FindPagined',
+      pagingParameters,
+      {
+        headers,
+        params,
+      }
+    );
   }
 
   getById(userName: string, id: number) {
-
-    return this.http.get<Photo>(API + '/' + userName + '/' + id)
+    return this.http.get<Photo>(API + '/' + userName + '/' + id);
   }
 }

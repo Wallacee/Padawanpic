@@ -7,37 +7,39 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { PhotoListResolver } from './photos/photo-list/photo-list.resolver';
 import { PhotoDetailComponent } from './photos/photo-detail/photo-detail.component';
 import { PhotoDetailResolver } from './photos/photo-detail/photo-detail.resolver';
+import { SiginComponent } from './home/signin/signin.component';
 
 const routes: Routes = [
   {
-    path: 'user/:userName',
+    path: '',
+    component: SiginComponent,
+  },
+  {
+    path: 'user/:userId',
     component: PhotoListComponent,
     resolve: {
-      photos: PhotoListResolver
-    }
+      photos: PhotoListResolver,
+    },
   },
   {
     path: 'user/:userName/:id',
     component: PhotoDetailComponent,
     resolve: {
-      photo: PhotoDetailResolver
-    }
+      photo: PhotoDetailResolver,
+    },
   },
   {
     path: 'p/add',
-    component: PhotoFormComponent
+    component: PhotoFormComponent,
   },
   {
     path: '**',
-    component: NotFoundComponent
-  }
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes)
-  ],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
-
+export class AppRoutingModule {}
